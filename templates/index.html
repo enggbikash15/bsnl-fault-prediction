@@ -130,8 +130,15 @@ async function predictFault(){
 
     let data = await response.json();
 
-    document.getElementById("result").innerHTML =
-        "Prediction: " + data.prediction;
+    document.getElementById("result").innerHTML = `
+
+<b>Prediction:</b> ${data.prediction}<br><br>
+
+<b>Fault Probability:</b> ${data.fault_probability}<br><br>
+
+<b>Severity:</b> ${data.severity}
+
+`;
 }
 
 const ctx = document.getElementById('myChart');
