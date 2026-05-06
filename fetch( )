@@ -1,5 +1,17 @@
-temperature: document.getElementById("temperature").value,
-traffic_load: document.getElementById("traffic").value,
-power_status: document.getElementById("power").value,
-equipment_health: document.getElementById("health").value,
-humidity: document.getElementById("humidity").value
+body: JSON.stringify({
+
+    signal_strength: document.getElementById("signal").value,
+
+    fiber_loss: document.getElementById("fiber").value,
+
+    temperature: document.getElementById("temperature").value,
+
+    traffic_load: document.getElementById("traffic").value,
+
+    power_status: document.getElementById("power").value,
+
+    equipment_health: document.getElementById("health").value,
+
+    humidity: document.getElementById("humidity").value
+
+})
