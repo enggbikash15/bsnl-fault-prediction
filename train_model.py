@@ -39,7 +39,7 @@ data['fault'] = (
 
     (data['temperature'] > 45) |
 
-    (data['traffic_load'] > 85) |
+    (data['traffic_load'] > 95) |
 
     (data['power_status'] == 0) |
 
