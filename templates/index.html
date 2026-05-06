@@ -1,36 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BSNL AI Fault Prediction</title>
+
+    <title>BSNL AI Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
 
         body{
-            font-family: Arial;
+            font-family:Arial;
             background:#f4f4f4;
+            margin:0;
+            padding:0;
+        }
+
+        .header{
+            background:#0077cc;
+            color:white;
+            padding:20px;
             text-align:center;
-            padding-top:50px;
         }
 
         .container{
-            width:400px;
-            background:white;
-            padding:30px;
+            width:90%;
             margin:auto;
-            border-radius:10px;
-            box-shadow:0px 0px 10px gray;
+            padding:20px;
         }
 
-        h1{
-            color:#0077cc;
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0px 0px 10px gray;
+            margin-bottom:20px;
         }
 
         input{
-            width:90%;
+            width:95%;
             padding:10px;
-            margin:10px;
-            border:1px solid gray;
-            border-radius:5px;
+            margin:10px 0;
         }
 
         button{
@@ -38,13 +47,8 @@
             color:white;
             border:none;
             padding:12px 20px;
-            border-radius:5px;
             cursor:pointer;
-            font-size:16px;
-        }
-
-        button:hover{
-            background:#005fa3;
+            border-radius:5px;
         }
 
         #result{
@@ -53,23 +57,43 @@
             color:green;
         }
 
+        canvas{
+            margin-top:20px;
+        }
+
     </style>
 
 </head>
 
 <body>
 
+<div class="header">
+    <h1>BSNL AI Network Dashboard 🚀</h1>
+</div>
+
 <div class="container">
 
-    <h1>BSNL AI Fault Prediction 🚀</h1>
+    <div class="card">
 
-    <input type="number" id="signal" placeholder="Signal Strength">
+        <h2>AI Fault Prediction</h2>
 
-    <input type="number" step="0.1" id="fiber" placeholder="Fiber Loss">
+        <input type="number" id="signal" placeholder="Signal Strength">
 
-    <button onclick="predictFault()">Predict</button>
+        <input type="number" step="0.1" id="fiber" placeholder="Fiber Loss">
 
-    <div id="result"></div>
+        <button onclick="predictFault()">Predict</button>
+
+        <div id="result"></div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Network Analytics</h2>
+
+        <canvas id="myChart"></canvas>
+
+    </div>
 
 </div>
 
@@ -100,6 +124,19 @@ async function predictFault(){
     document.getElementById("result").innerHTML =
         "Prediction: " + data.prediction;
 }
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        datasets: [{
+            label: 'Network Faults',
+            data: [12, 19, 8, 15, 10]
+        }]
+    }
+});
 
 </script>
 
