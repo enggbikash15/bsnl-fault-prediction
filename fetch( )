@@ -1,0 +1,5 @@
+temperature: document.getElementById("temperature").value,
+traffic_load: document.getElementById("traffic").value,
+power_status: document.getElementById("power").value,
+equipment_health: document.getElementById("health").value,
+humidity: document.getElementById("humidity").value
