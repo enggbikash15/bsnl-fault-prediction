@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify
-import random
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "BSNL AI Fault Prediction Running Successfully 🚀"
+    return render_template("index.html")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -16,9 +15,9 @@ def predict():
     fiber = float(data['fiber_loss'])
 
     if signal < 40 or fiber > 3:
-        result = "Fault Detected"
+        result = "Fault Detected ⚠️"
     else:
-        result = "No Fault"
+        result = "No Fault ✅"
 
     return jsonify({
         "prediction": result
