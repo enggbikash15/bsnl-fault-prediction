@@ -1,63 +1,112 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-    <title>BSNL AI Dashboard</title>
+    <title>BSNL AI Network Dashboard</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
 
         body{
-            font-family:Arial;
-            background:#f4f4f4;
+            font-family: Arial, sans-serif;
+            background:#eef2f7;
             margin:0;
             padding:0;
         }
 
         .header{
-            background:#0077cc;
+            background:linear-gradient(90deg,#0077cc,#00aaff);
             color:white;
-            padding:20px;
             text-align:center;
+            padding:20px;
+            box-shadow:0px 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header img{
+            width:70px;
+            vertical-align:middle;
+        }
+
+        .header h1{
+            display:inline-block;
+            margin-left:10px;
+            vertical-align:middle;
         }
 
         .container{
             width:90%;
+            max-width:1100px;
             margin:auto;
-            padding:20px;
+            margin-top:20px;
         }
 
         .card{
             background:white;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0px 0px 10px gray;
-            margin-bottom:20px;
+            padding:25px;
+            border-radius:12px;
+            box-shadow:0px 0px 12px rgba(0,0,0,0.1);
+            margin-bottom:25px;
+        }
+
+        h2{
+            color:#0077cc;
+        }
+
+        .input-group{
+            margin-bottom:15px;
+        }
+
+        label{
+            font-weight:bold;
+            display:block;
+            margin-bottom:5px;
         }
 
         input{
-            width:95%;
-            padding:10px;
-            margin:10px 0;
+            width:100%;
+            padding:12px;
+            border-radius:6px;
+            border:1px solid #ccc;
+            font-size:15px;
         }
 
         button{
             background:#0077cc;
             color:white;
             border:none;
-            padding:12px 20px;
+            padding:14px 24px;
+            border-radius:6px;
+            font-size:16px;
             cursor:pointer;
-            border-radius:5px;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#005fa3;
+        }
+
+        #loading{
+            display:none;
+            margin-top:15px;
+            color:#0077cc;
+            font-weight:bold;
         }
 
         #result{
             margin-top:20px;
-            font-size:20px;
-            color:green;
+            padding:15px;
+            border-radius:8px;
+            background:#f0f8ff;
+            font-size:18px;
+            line-height:1.8;
         }
 
-        canvas{
+        .footer{
+            text-align:center;
+            padding:15px;
+            color:#555;
             margin-top:20px;
         }
 
@@ -68,7 +117,11 @@
 <body>
 
 <div class="header">
+
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/10/BSNL_logo.svg/1200px-BSNL_logo.svg.png">
+
     <h1>BSNL AI Network Dashboard 🚀</h1>
+
 </div>
 
 <div class="container">
@@ -77,20 +130,46 @@
 
         <h2>AI Fault Prediction</h2>
 
-        <input type="number" id="signal" placeholder="Signal Strength">
-        <input type="number" id="temperature" placeholder="Temperature">
+        <div class="input-group">
+            <label>Signal Strength</label>
+            <input type="number" id="signal" placeholder="Enter signal strength">
+        </div>
 
-<input type="number" id="traffic" placeholder="Traffic Load">
+        <div class="input-group">
+            <label>Fiber Loss</label>
+            <input type="number" id="fiber" placeholder="Enter fiber loss">
+        </div>
 
-<input type="number" id="power" placeholder="Power Status (1=ON,0=OFF)">
+        <div class="input-group">
+            <label>Temperature</label>
+            <input type="number" id="temperature" placeholder="Enter temperature">
+        </div>
 
-<input type="number" id="health" placeholder="Equipment Health">
+        <div class="input-group">
+            <label>Traffic Load</label>
+            <input type="number" id="traffic" placeholder="Enter traffic load">
+        </div>
 
-<input type="number" id="humidity" placeholder="Humidity">
+        <div class="input-group">
+            <label>Power Status</label>
+            <input type="number" id="power" placeholder="1 = ON , 0 = OFF">
+        </div>
 
-        <input type="number" step="0.1" id="fiber" placeholder="Fiber Loss">
+        <div class="input-group">
+            <label>Equipment Health</label>
+            <input type="number" id="health" placeholder="Enter equipment health">
+        </div>
 
-        <button onclick="predictFault()">Predict</button>
+        <div class="input-group">
+            <label>Humidity</label>
+            <input type="number" id="humidity" placeholder="Enter humidity">
+        </div>
+
+        <button onclick="predictFault()">Predict Fault</button>
+
+        <div id="loading">
+            ⏳ AI Model Processing...
+        </div>
 
         <div id="result"></div>
 
@@ -106,12 +185,15 @@
 
 </div>
 
+<div class="footer">
+    BSNL AI Telecom Monitoring System © 2026
+</div>
+
 <script>
 
 async function predictFault(){
 
-    let signal = document.getElementById("signal").value;
-    let fiber = document.getElementById("fiber").value;
+    document.getElementById("loading").style.display = "block";
 
     let response = await fetch('/predict', {
 
@@ -122,35 +204,54 @@ async function predictFault(){
         },
 
         body:JSON.stringify({
-            signal_strength:signal,
-            fiber_loss:fiber
+
+            signal_strength: document.getElementById("signal").value,
+
+            fiber_loss: document.getElementById("fiber").value,
+
+            temperature: document.getElementById("temperature").value,
+
+            traffic_load: document.getElementById("traffic").value,
+
+            power_status: document.getElementById("power").value,
+
+            equipment_health: document.getElementById("health").value,
+
+            humidity: document.getElementById("humidity").value
+
         })
 
     });
 
     let data = await response.json();
 
+    document.getElementById("loading").style.display = "none";
+
     document.getElementById("result").innerHTML = `
 
-<b>Prediction:</b> ${data.prediction}<br><br>
+        <b>Prediction:</b> ${data.prediction}<br>
 
-<b>Fault Probability:</b> ${data.fault_probability}<br><br>
+        <b>Fault Probability:</b> ${data.fault_probability}<br>
 
-<b>Severity:</b> ${data.severity}
+        <b>Severity:</b> ${data.severity}
 
-`;
+    `;
 }
 
 const ctx = document.getElementById('myChart');
 
 new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
         datasets: [{
             label: 'Network Faults',
-            data: [12, 19, 8, 15, 10]
+            data: [12, 19, 8, 15, 10, 7],
+            borderWidth: 3
         }]
+    },
+    options: {
+        responsive:true
     }
 });
 
